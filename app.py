@@ -17,10 +17,7 @@ class App(tk.Tk):
         self.purple_cat_image = tk.PhotoImage(file="./purple_cat.png")
         self.red_cat_image = tk.PhotoImage(file="./red_cat.png")
         self.yellow_cat_image = tk.PhotoImage(file="yellow_cat.png")
-        self.cat_image_list = [tk.PhotoImage(file=file) for file in listdir() if '_cat.png' in file]
-
-        # Current cat image
-        self.current_cat_image = self.generate_random_cat_image()
+        self.cat_image_list = [tk.PhotoImage(file=file) for file in listdir() if file.endswith('_cat.png')]
 
         # Mouse coordinates
         self.mouse_x = 0
@@ -37,6 +34,9 @@ class App(tk.Tk):
         self.canvas = tk.Canvas(master=self, width=912, height=768)
         self.canvas.pack()
         self.canvas.create_image(456, 384, image=self.background_image)
+
+        # Generate a random cat image when the app is launched
+        self.current_cat_image = self.generate_random_cat_image()
 
         # Bind mouse events
         self.bind("<Motion>", self.track_mouse_movement)
@@ -62,7 +62,9 @@ class App(tk.Tk):
     def mouse_press(self, event=None):
         self.is_mouse_pressed = 1
         print(f'Mouse has been pressed at x: {self.mouse_x}, y: {self.mouse_y}')
-        self.canvas.create_image()
+        self.canvas.create_image(self.cursor_x * 72 + 60,
+                                 self.cursor_y * 72 + 60,
+                                 image=self.current_cat_image)
 
         self.generate_random_cat_image()
 
@@ -72,6 +74,7 @@ class App(tk.Tk):
     def generate_random_cat_image(self):
         image = random.choice(self.cat_image_list)
         self.canvas.delete("RANDOM_CAT")
+        self.current_cat_image = image
         self.canvas.create_image(750, 110, image=image, tags="RANDOM_CAT")
         return image
 
