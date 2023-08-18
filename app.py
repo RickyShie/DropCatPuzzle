@@ -20,6 +20,9 @@ class App(tk.Tk):
         self.cat_paw_image = tk.PhotoImage(file="./cat_paw.png")
         self.cat_image_list = [tk.PhotoImage(file=file) for file in listdir() if file.endswith('_cat.png')]
 
+        # Initialize a board
+        self.board = [[None for _ in range(10)] for _ in range(8)]
+
         # Mouse coordinates
         self.mouse_x = 0
         self.mouse_y = 0
@@ -66,17 +69,14 @@ class App(tk.Tk):
 
     def drop_cat(self, x, y, image):
         next_y = y + 1
-        if next_y < 10 and not self.is_cell_occupied(x, next_y):
+        if next_y < 10 :
             self.canvas.delete(f"CAT_{x}_{y}")
             self.canvas.create_image(x * 72 + 60, next_y * 72 + 60, image=image, tags=f"CAT_{x}_{next_y}")
-            self.after(500, lambda: self.drop_cat(x, next_y, image))  # 1000 milliseconds = 1 second
+            self.after(500, lambda: self.drop_cat(x, next_y, image))
         else:
             self.canvas.create_image(x * 72 + 60, y * 72 + 60, image=image, tags=f"CAT_{x}_{y}")
 
-    def is_cell_occupied(self, x, y):
-        return bool(self.canvas.find_withtag(f"CAT_{x}_{y}"))
-
-    def mouse_release(self):
+    def mouse_release(self, event=None):
         self.is_mouse_pressed = 0
 
     def generate_random_cat_image(self):
