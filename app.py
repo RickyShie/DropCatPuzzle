@@ -16,7 +16,8 @@ class App(tk.Tk):
         self.pink_cat_image = tk.PhotoImage(file="./pink_cat.png")
         self.purple_cat_image = tk.PhotoImage(file="./purple_cat.png")
         self.red_cat_image = tk.PhotoImage(file="./red_cat.png")
-        self.yellow_cat_image = tk.PhotoImage(file="yellow_cat.png")
+        self.yellow_cat_image = tk.PhotoImage(file="./yellow_cat.png")
+        self.cat_paw_image = tk.PhotoImage(file="./cat_paw.png")
         self.cat_image_list = [tk.PhotoImage(file=file) for file in listdir() if file.endswith('_cat.png')]
 
         # Mouse coordinates
